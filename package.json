@@ -6,11 +6,11 @@
   "repository": "https://github.com/elischutze/slack-invitation-bot.git",
   "author": "Elianne Schutze <eliannemsr@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
   "engines": {
     "node": "6.3.0"
-  },
-  "scripts": {
-    "start": "node server.js",
   },
   "dependencies": {
     "body-parser": "^1.16.1",
