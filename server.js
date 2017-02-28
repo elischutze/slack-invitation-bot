@@ -1,7 +1,7 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
-var config = require('./config')
+var config = {} // require('./config')
 var Promise = require('promise')
 var path = require('path')
 var app = express()
