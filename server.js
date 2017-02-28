@@ -56,16 +56,16 @@ function inviteToSlack (person) {
           resolve('success')
         } else {
           console.log('code:', res.statusCode, res.body)
-          sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for' +
+          sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for ' +
           person.first + ' ' +
-          person.last + '<' + person.email + '>' + ' - Something went wrong..\nError: ' + JSON.parse(res.body).error})
+          person.last + '<' + person.email + '>\n' + 'Couldn\'t invite. Error: ' + JSON.parse(res.body).error})
           resolve('error')
         }
       } else {
         console.log('code:', res.statusCode, res.body)
-        sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for' +
+        sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for ' +
         person.first + ' ' +
-        person.last + '<' + person.email + '>' + ' - Something went wrong..\nResponded with status:' + res.statusCode})
+        person.last + '<' + person.email + '>\n' + 'Something went wrong! Responded with status:' + res.statusCode})
         resolve('error')
       }
     }
