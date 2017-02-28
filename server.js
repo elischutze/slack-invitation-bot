@@ -50,18 +50,22 @@ function inviteToSlack (person) {
         if (JSON.parse(res.body).ok) {
           console.log('code:', res.statusCode, res.body)
           sendWebhook(process.env.webhook || config.webhook,
-            {'text': 'Testing!\nIt worked!\nInvite sent to: ' +
+            {'text': 'New invite sent to: ' +
             person.first + ' ' +
             person.last + '<' + person.email + '>'})
           resolve('success')
         } else {
           console.log('code:', res.statusCode, res.body)
-          sendWebhook(process.env.webhook || config.webhook, {'text': 'Testing!\nSomething went wrong..\nError: ' + res.body})
+          sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for' +
+          person.first + ' ' +
+          person.last + '<' + person.email + '>' + ' - Something went wrong..\nError: ' + JSON.parse(res.body).error})
           resolve('error')
         }
       } else {
         console.log('code:', res.statusCode, res.body)
-        sendWebhook(process.env.webhook || config.webhook, {'text': 'Testing!\nSomething went wrong..\nStatus:' + res.statusCode})
+        sendWebhook(process.env.webhook || config.webhook, {'text': 'Invite request for' +
+        person.first + ' ' +
+        person.last + '<' + person.email + '>' + ' - Something went wrong..\nResponded with status:' + res.statusCode})
         resolve('error')
       }
     }
@@ -86,20 +90,6 @@ app.post('/submit', function (req, res) {
   .then(function (result) {
     res.redirect('/' + result)
   })
-}
-)
-
-app.get('/send', function (req, res) {
-  request.post(process.env.webhook || config.webhook,
-    {json: true, body: { 'text': 'i am integr8' }},
-    function (err, res, body) {
-      if (err) {
-        console.log('err in fake send')
-      }
-      console.log('bod:', body)
-    }
-  )
-  res.send('sent..')
 }
 )
 
