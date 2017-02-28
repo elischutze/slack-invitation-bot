@@ -33,7 +33,7 @@ function inviteToSlack (person) {
     var options = {
       url: url,
       form: {
-        token: config.token,
+        token: process.env.token || config.token,
         email: person.email + '',
         channels: 'C3CF5TED6,C4B0XAMQD,C4A7T14U9',
         first_name: person.first && '',
@@ -49,19 +49,19 @@ function inviteToSlack (person) {
       if (res.statusCode === 200) {
         if (JSON.parse(res.body).ok) {
           console.log('code:', res.statusCode, res.body)
-          sendWebhook(config.webhook,
+          sendWebhook(process.env.webhook || config.webhook,
             {'text': 'Testing!\nIt worked!\nInvite sent to: ' +
             person.first + ' ' +
             person.last + '<' + person.email + '>'})
           resolve('success')
         } else {
           console.log('code:', res.statusCode, res.body)
-          sendWebhook(config.webhook, {'text': 'Testing!\nSomething went wrong..\nError: ' + res.body})
+          sendWebhook(process.env.webhook || config.webhook, {'text': 'Testing!\nSomething went wrong..\nError: ' + res.body})
           resolve('error')
         }
       } else {
         console.log('code:', res.statusCode, res.body)
-        sendWebhook(config.webhook, {'text': 'Testing!\nSomething went wrong..\nStatus:' + res.statusCode})
+        sendWebhook(process.env.webhook || config.webhook, {'text': 'Testing!\nSomething went wrong..\nStatus:' + res.statusCode})
         resolve('error')
       }
     }
@@ -90,7 +90,7 @@ app.post('/submit', function (req, res) {
 )
 
 app.get('/send', function (req, res) {
-  request.post(config.webhook,
+  request.post(process.env.webhook || config.webhook,
     {json: true, body: { 'text': 'i am integr8' }},
     function (err, res, body) {
       if (err) {
