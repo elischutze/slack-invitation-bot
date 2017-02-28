@@ -29,24 +29,25 @@ function sendWebhook (url, body) {
 
 function inviteToSlack (person) {
   return new Promise(function (resolve, reject) {
-    var url = 'https://slack.com/api/users.admin.invite?token=' + config.token
+    var url = 'https://slack.com/api/users.admin.invite'
     var options = {
       url: url,
-      body: {
+      form: {
+        token: config.token,
         email: person.email + '',
         channels: 'C3CF5TED6,C4B0XAMQD,C4A7T14U9',
         first_name: person.first && '',
         last_name: person.last && ''
-      },
-      json: true
+      }
     }
+    console.log(options.form.email)
     request.post(options, function (err, res, body) {
       if (err) {
         console.log('posterr:', err)
         resolve('error')
       }
       if (res.statusCode === 200) {
-        if (res.body.ok) {
+        if (JSON.parse(res.body).ok) {
           console.log('code:', res.statusCode, res.body)
           sendWebhook(config.webhook,
             {'text': 'Testing!\nIt worked!\nInvite sent to: ' +
@@ -55,10 +56,11 @@ function inviteToSlack (person) {
           resolve('success')
         } else {
           console.log('code:', res.statusCode, res.body)
-          sendWebhook(config.webhook, {'text': 'Testing!\nSomething went wrong..\nError: ' + res.body.error})
+          sendWebhook(config.webhook, {'text': 'Testing!\nSomething went wrong..\nError: ' + res.body})
           resolve('error')
         }
       } else {
+        console.log('code:', res.statusCode, res.body)
         sendWebhook(config.webhook, {'text': 'Testing!\nSomething went wrong..\nStatus:' + res.statusCode})
         resolve('error')
       }
@@ -80,7 +82,7 @@ app.get('/success', function (request, response) {
 
 app.post('/submit', function (req, res) {
   console.log(req.body)
-  inviteToSlack({email: decodeURI(req.body.email), first: req.body.fname, last: req.body.lname})
+  inviteToSlack({email: req.body.email, first: req.body.fname, last: req.body.lname})
   .then(function (result) {
     res.redirect('/' + result)
   })
