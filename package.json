@@ -1,0 +1,25 @@
+{
+  "name": "slack-invitation-bot",
+  "version": "1.0.0",
+  "description": "bot to approve invite requests to slack",
+  "main": "server.js",
+  "repository": "https://github.com/elischutze/slack-invitation-bot.git",
+  "author": "Elianne Schutze <eliannemsr@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": "6.3.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "path": "^0.12.7",
+    "promise": "^7.1.1",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.2",
+    "eslint-plugin-standard": "^2.0.1"
+  }
+}
